@@ -47,9 +47,11 @@ if (
   typeof post !== "object" ||
   post === null ||
   typeof (post as { url?: unknown }).url !== "string" ||
-  !(post as { url: string }).url.startsWith("https://x.com/")
+  !(post as { url: string }).url.startsWith("https://x.com/") ||
+  (post as { url: string }).url.includes("<") ||
+  (post as { url: string }).url.includes(">")
 ) {
-  fail("POST.json must be an object with a url string starting with https://x.com/");
+  fail("POST.json must be an object with a real post url string starting with https://x.com/ (no <handle>/<id> placeholder)");
 }
 
 writeFileSync(join(outputDir, "POST.json"), JSON.stringify(post, null, 2) + "\n");
